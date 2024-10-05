@@ -3,7 +3,15 @@
  * @version: 
  * @Author: jenny.gao
  * @Date: 2024-10-05 09:52:38
- * @LastEditTime: 2024-10-05 22:00:04
+ * @LastEditTime: 2024-10-05 22:43:27
+ * @LastEditors: jenny.gao
+-->
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: jenny.gao
+ * @Date: 2024-10-05 09:52:38
+ * @LastEditTime: 2024-10-05 22:33:18
  * @LastEditors: jenny.gao
 -->
 <!DOCTYPE html>
@@ -19,22 +27,25 @@
             margin: 0;
             padding: 0;
         }
+        #canvasBox {
+            position: relative;
+        }
         #fullscreen-btn {
+            position: absolute;
             top: 0;
-            left: 0;
-            z-index: 1000;
+            right: 0;
         }
     </style>
 </head>
 
 <body>
     <div id="canvasBox"></div>
-    <button id="fullscreen-btn">全屏</button>  
+    <button id="fullscreen-btn">全屏</button>
 </body>
 <script type="module">
     import * as THREE from "./js/three/src/Three.js";
     import { OrbitControls } from './js/three/examples/jsm/controls/OrbitControls.js';
-    import { PositionalAudioHelper } from './js/three/examples/jsm/helpers/PositionalAudioHelper.js'; 
+    import { PositionalAudioHelper } from './js/three/examples/jsm/helpers/PositionalAudioHelper.js';
     // 创建场景
     const scene = new THREE.Scene();
     // 创建相机
@@ -51,7 +62,7 @@
     const Loader1 = textureLoader.load('./assets/images/cute.jpg');
     const Loader2 = textureLoader.load('./assets/images/fengjing.jpg');
     // 创建立方体
-    const geometry = new THREE.BoxGeometry(1.5,1.5,1.5);
+    const geometry = new THREE.BoxGeometry(3, 3, 3);
     const material1 = new THREE.MeshBasicMaterial({
         map: Loader1,
     });
@@ -82,21 +93,21 @@
     controls.enableDamping = true;
 
     const listener = new THREE.AudioListener();
-    camera.add( listener );
+    camera.add(listener);
     // 创建一个全局 audio 源
-    const sound = new THREE.Audio( listener );
+    const sound = new THREE.Audio(listener);
     // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( './assets/qinghuaci.mp3', function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume( 0.5 );
+    audioLoader.load('./assets/qinghuaci.mp3', function (buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(true);
+        sound.setVolume(0.5);
         sound.play();
     });
 
     // 循环执行
     function animate() {
-          controls.update();
+        controls.update();
         // 旋转矩形
         cube1.rotation.x += 0.01;
         cube1.rotation.y += 0.01;
@@ -108,29 +119,26 @@
 
     // 执行动画函数
     animate();
-
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     });
-
-    const button = document.getElementById('fullscreen-btn');  
-
-        button.addEventListener('click', () => {  
-            if (!document.fullscreenElement) {  
-                document.documentElement.requestFullscreen();  
-            } else {  
-                document.exitFullscreen();  
-            }  
-        });   
-        document.addEventListener('fullscreenchange', () => {  
-            if (document.fullscreenElement) {  
-                button.textContent = '退出全屏';  
-            } else {  
-                button.textContent = '全屏';  
-            }  
-        });  
+    const button = document.getElementById('fullscreen-btn');
+    button.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    });
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            button.textContent = '退出全屏';
+        } else {
+            button.textContent = '全屏';
+        }
+    });  
 </script>
 
 </html>
